@@ -27,7 +27,7 @@ public class MiniMIPSim {
 		
 		//TODO: check arguments better!
 		if (args.length < 6) {
-			System.out.println("Error, usage: ./MIPSsim -I instructions.txt -R register.txt -O simulation.txt");
+			System.out.println("Error, usage: java MIPSsim -I instructions.txt -R register.txt -O simulation.txt");
 			System.exit(1);
 		}
 		
