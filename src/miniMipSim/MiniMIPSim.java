@@ -21,11 +21,25 @@ public class MiniMIPSim {
 	
 	static MiniMIPSim sim;
 	
+	/**
+	 * Instructions covered by the program.
+	 * 
+	 * @author terek
+	 *
+	 */
 	public static enum Opcode {ADD, SUB, MUL, DIV};
 
+	/**
+	 * Entry point of program.  Takes a register file and instruction file and outputs the step by step
+	 * simulation of the program through the pipeline.
+	 * 
+	 * Usage: java MIPSsim -I instructions.txt -R register.txt -O simulation.txt
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		
-		//TODO: check arguments better!
 		if (args.length < 6) {
 			System.out.println("Error, usage: java MIPSsim -I instructions.txt -R register.txt -O simulation.txt");
 			System.exit(1);
@@ -64,6 +78,9 @@ public class MiniMIPSim {
 
 	}
 	
+	/**
+	 * Represents write unit.
+	 */
 	public static void write() {
 		InstructionToken i = rb.getTop();
 		
@@ -75,6 +92,9 @@ public class MiniMIPSim {
 		rb.removeTop();
 	}
 	
+	/**
+	 * Represents asu unit.
+	 */
 	public static void asu() {
 		InstructionToken i = sb.getTop();
 		
@@ -86,6 +106,9 @@ public class MiniMIPSim {
 		sb.removeTop();
 	}
 	
+	/**
+	 * Represents mdu unit.
+	 */
 	public static void mdu2() {
 		InstructionToken i = pb.getTop();
 		
@@ -97,6 +120,9 @@ public class MiniMIPSim {
 		pb.removeTop();
 	}
 	
+	/**
+	 * Represents another mdu unit.
+	 */
 	public static void mdu1() {
 		InstructionToken i = mb.getTop();
 		
@@ -109,6 +135,9 @@ public class MiniMIPSim {
 		
 	}
 	
+	/**
+	 * Represents issue unit.
+	 */
 	public static void issue() {
 		InstructionToken i = ib.getTop();
 		
@@ -122,6 +151,9 @@ public class MiniMIPSim {
 		ib.removeTop();
 	}
 	
+	/**
+	 * Represents read unit.
+	 */
 	public static void read() {
 				
 		InstructionToken i = im.getTop();
@@ -145,6 +177,9 @@ public class MiniMIPSim {
 		im.removeTop();
 	}
 	
+	/**
+	 * Syncs all buffers.
+	 */
 	public static void sync() {
 		rf.sync();
 		ib.sync();
@@ -154,6 +189,12 @@ public class MiniMIPSim {
 		rb.sync();
 	}
 	
+	/**
+	 * Writes the contents of all buffers to output buffer.
+	 * 
+	 * @param out - buffer to write to
+	 * @throws IOException
+	 */
 	public static void print(BufferedWriter out) throws IOException {
 		
 		if (i != 0) {
@@ -170,6 +211,9 @@ public class MiniMIPSim {
 
 	}
 	
+	/**
+	 * Prints the contents of the pipeline.
+	 */
 	public static void print() {
 		
 		System.out.print("STEP[" + i + "]:\n");
@@ -183,6 +227,10 @@ public class MiniMIPSim {
 		System.out.print("\n");
 	}
 	
+	/**
+	 * Returns if the pipeline instructions are all finished.
+	 * @return
+	 */
 	public static boolean finished() {
 		if (im.isEmpty() && ib.isEmpty() && mb.isEmpty() && sb.isEmpty() && pb.isEmpty() && rb.isEmpty()){
 			return true;

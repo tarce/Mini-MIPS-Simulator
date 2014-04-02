@@ -19,6 +19,12 @@ public class InstructionMemory {
 	private final Path fFilePath;
 	private final Charset ENCODING = StandardCharsets.UTF_8;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param fileName - the instruction file
+	 * @throws IOException
+	 */
 	public InstructionMemory(String fileName) throws IOException {
 		instructions = new LinkedList<InstructionToken>();
 
@@ -30,10 +36,20 @@ public class InstructionMemory {
 		}
 	}
 	
+	/**
+	 * Returns whether or not there are instructions left.
+	 * 
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return instructions.isEmpty();
 	}
 	
+	/**
+	 * Takes a line from the register file provided and adds it to the register file object.
+	 * 
+	 * @param aLine - string from register file
+	 */
 	private void processLine(String aLine) {			
 
 		String tempOp = null;
@@ -77,6 +93,11 @@ public class InstructionMemory {
 		scanner.close();		
 	}
 	
+	/**
+	 * Returns the instruction ready to go on to next stage.
+	 * 
+	 * @return 
+	 */
 	public InstructionToken getTop() {
 		if (!instructions.isEmpty()) {
 			return instructions.getFirst();
@@ -84,6 +105,12 @@ public class InstructionMemory {
 		return null;
 	}
 	
+	/**
+	 * Removes the instruction that is to be put in the next stage.
+	 * Note: call getTop() first.
+	 * 
+	 * @return
+	 */
 	public boolean removeTop() {
 		if (!instructions.isEmpty()) {
 			instructions.removeFirst();
@@ -92,6 +119,12 @@ public class InstructionMemory {
 		return false;
 	}
 	
+	/**
+	 * Writes the contents of the buffer out.
+	 * 
+	 * @param out - buffer to written to
+	 * @throws IOException
+	 */
 	public void printContents(BufferedWriter out) throws IOException {
 		
 		Collections.sort(instructions);
@@ -108,6 +141,9 @@ public class InstructionMemory {
 		out.write(instructions.get(instructions.size()-1).toString() + "\n");
 	}
 	
+	/**
+	 * Prints the contents of the buffer.
+	 */
 	public void printContents() {
 		
 		Collections.sort(instructions);

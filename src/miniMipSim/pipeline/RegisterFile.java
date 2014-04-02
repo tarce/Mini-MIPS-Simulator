@@ -18,6 +18,12 @@ public class RegisterFile {
 	private final Path fFilePath;
 	private final Charset ENCODING = StandardCharsets.UTF_8;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param fileName - the register file
+	 * @throws IOException
+	 */
 	public RegisterFile(String fileName) throws IOException {
 		
 		temporary = new LinkedList<RegisterToken>();
@@ -31,6 +37,11 @@ public class RegisterFile {
 		}
 	}
 	
+	/**
+	 * Takes a line from the register file provided and adds it to the register file object.
+	 * 
+	 * @param aLine - string from register file
+	 */
 	private void processLine(String aLine) {			
 		String tempName = null;
 		String tempValue = null;
@@ -56,6 +67,12 @@ public class RegisterFile {
 		scanner.close();		
 	}
 	
+	/**
+	 * Given a register, it will return the token of that register.
+	 * 
+	 * @param registerName - the integer value of the register
+	 * @return
+	 */
 	public RegisterToken getToken(int registerName) {
 		for (int i = 0; i < finalized.size(); i++) {
 			if(finalized.get(i).registerName == registerName) {
@@ -65,6 +82,11 @@ public class RegisterFile {
 		return null;
 	}
 	
+	/**
+	 * Adds a register token to the register file.
+	 * 
+	 * @param t - the register token to be added
+	 */
 	public void putToken (RegisterToken t) {
 		
 		for (int i = 0; i < finalized.size(); i++) {
@@ -82,6 +104,9 @@ public class RegisterFile {
 		
 	}
 	
+	/**
+	 * Syncs the two internal buffers.
+	 */
 	public void sync() {
 		
 		while(!temporary.isEmpty()) {
@@ -89,7 +114,13 @@ public class RegisterFile {
 		}
 		temporary.clear();
 	}
-		
+	
+	/**
+	 * Writes the contents of the RegisterFile to a buffer.
+	 * 
+	 * @param out - the buffer to be written
+	 * @throws IOException
+	 */
 	public void printContents(BufferedWriter out) throws IOException {
 		
 		Collections.sort(finalized);
@@ -107,6 +138,9 @@ public class RegisterFile {
 		out.write(finalized.get(finalized.size()-1).toString() + "\n");
 	}
 	
+	/**
+	 * Prints the contents of the RegisterFile
+	 */
 	public void printContents() {
 		
 		Collections.sort(finalized);
